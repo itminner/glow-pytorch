@@ -26,10 +26,20 @@ if __name__ == "__main__":
     hparams = JsonConfig(hparams)
     dataset = vision.Datasets[dataset]
     # set transform of dataset
-    transform = transforms.Compose([
-        transforms.CenterCrop(hparams.Data.center_crop),
-        transforms.Resize(hparams.Data.resize),
-        transforms.ToTensor()])
+
+    print("-------dataset name: ", dataset)
+    if dataset == "rgb2nir" :
+        print("----------use rgb2nir preprocess ")
+        transform = transforms.Compose([
+            transforms.Resize(hparams.Data.resize),
+            transforms.ToTensor()])
+    else:
+        transform = transforms.Compose([
+            transforms.CenterCrop(hparams.Data.center_crop),
+            transforms.Resize(hparams.Data.resize),
+            transforms.ToTensor()])
+
+
     # build graph and dataset
     built = build(hparams, True)
     dataset = dataset(dataset_root, transform=transform)
