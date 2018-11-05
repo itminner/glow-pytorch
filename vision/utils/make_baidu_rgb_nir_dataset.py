@@ -36,7 +36,7 @@ if __name__ == "__main__":
     images = {}
     attr = None
     assert os.path.exists(dataset_folder), "{} not exists".format(dataset_folder)
-    if os.path.exists(out_dataset_folder):
+    if not os.path.exists(out_dataset_folder):
         os.makedirs(out_dataset_folder)
 
     list_attr_file = open(os.path.join(out_dataset_folder, ATTR_ANNO), 'w')
@@ -48,18 +48,25 @@ if __name__ == "__main__":
             print("fname: ", fname)
             if _is_image(fname):
                 src_path = os.path.join(root, fname)
-                dst_path = os.path.join(out_dataset_folder, fname)
-                shutil.copy(src_path, dst_path)
+                _fname, _ext = os.path.splitext(fname)
 
-                list_attr_file.write(fname)
-                list_attr_file.write(" ")
                 if root.endswith("A"):
+                    _ofname = _fname + "_rgb" + _ext 
+                    list_attr_file.write(_ofname)
+                    list_attr_file.write(" ")
+                    dst_path = os.path.join(out_dataset_folder, _ofname)
+                    
                     list_attr_file.write("-1")
+                    shutil.copy(src_path, dst_path)
+                    list_attr_file.write("\n")
                 elif root.endswith("B"):
+                    _ofname = _fname + "_nir" + _ext 
+                    list_attr_file.write(_ofname)
+                    list_attr_file.write(" ")
+                    dst_path = os.path.join(out_dataset_folder, _ofname)
+                    
                     list_attr_file.write("1")
-                list_attr_file.write("\n")
-
-
-                images[os.path.splitext(fname)[0]] = dst_path
-
+                    shutil.copy(src_path, dst_path)
+                    list_attr_file.write("\n")
+                #images[os.path.splitext(fname)[0]] = dst_path
     list_attr_file.close();

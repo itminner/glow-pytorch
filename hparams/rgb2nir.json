@@ -55,6 +55,6 @@
         "weight_y": 0.5
     },
     "Infer": {
-        "pre_trained": "./results/celeba/trained.pkg"
+        "pre_trained": "./results/rgb2nir/trained.pkg"
     }
 }
